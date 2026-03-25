@@ -36,14 +36,6 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async remove(id: number) {
-    const result = await this.usersRepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('User not found');
-    }
-  }
-
   async update(id: number, upadteUserDto: UpdateUserDto) {
     const user = await this.usersRepository.preload({
       id,
@@ -53,5 +45,13 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     return this.usersRepository.save(user);
+  }
+
+  async remove(id: number) {
+    const result = await this.usersRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

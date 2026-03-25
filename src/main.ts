@@ -2,15 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { useContainer } from 'class-validator';
+import ValidationPipeOptionsConfig from './_utils/config/validation-pipe-options.config';
+import SwaggerCustomOptionsConfig from './_utils/config/swagger-custom-options.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.setGlobalPrefix('api/v1');
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe(ValidationPipeOptionsConfig)).enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('My App API')
@@ -19,9 +20,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, {
-    useGlobalPrefix: true,
-  });
+  SwaggerModule.setup('docs', app, document, SwaggerCustomOptionsConfig);
   await app.listen(3000);
 }
 void bootstrap();
