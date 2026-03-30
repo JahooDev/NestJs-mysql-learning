@@ -26,9 +26,24 @@ export default tseslint.config(
   },
   {
     rules: {
+      'max-len': [
+        1,
+        {
+          code: 120,
+          ignorePattern: '^import .*',
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+          ignoreComments: true,
+          ignoreTrailingComments: true,
+          ignoreRegExpLiterals: true,
+        },
+      ],
+      '@typescript-eslint/interface-name-prefix': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
     },
   },
 );
