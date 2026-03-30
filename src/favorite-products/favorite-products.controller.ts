@@ -13,6 +13,10 @@ export class FavoriteProductsController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Get All favorite products for a user',
+    description: 'Returns a list of all products marked as favorite by all users.',
+  })
   findAll() {
     return this.favoriteProductsService.findAll();
   }

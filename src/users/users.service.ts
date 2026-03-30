@@ -11,6 +11,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
+
   findAll() {
     return this.usersRepository.find();
   }

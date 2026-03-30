@@ -2,6 +2,8 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { FavoriteProductEntity } from './entities/favorite-product.entity';
 import { Repository } from 'typeorm';
+import { FavoriteProductResponseDto } from './dto/favorite-product-response.dto/favorite-product-response.dto';
+import { toFavoriteProductResponseDtoArray } from './favorite-products.mapper';
 
 @Injectable()
 export class FavoriteProductsService {
@@ -27,8 +29,12 @@ export class FavoriteProductsService {
     return this.favoriteProductsRepository.save(favorite);
   }
 
-  findAll() {
-    return this.favoriteProductsRepository.find();
+  async findAll(): Promise<FavoriteProductResponseDto[]> {
+    const favorites = await this.favoriteProductsRepository.find({
+      relations: ['user', 'product'],
+    });
+
+    return toFavoriteProductResponseDtoArray(favorites);
   }
 
   async findUserFavouriteProducts(userId: number) {
